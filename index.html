@@ -1,942 +1,820 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="GAVE - Guia de Ações em Vigilância Epidemiológica. Informações, recursos e suporte para profissionais de saúde e população em geral.">
-    <title>GAVE - Vigilância Epidemiológica no Cotidiano</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <style>
-        /* Variáveis de cores baseadas no logo do GAVE */
-        :root {
-            --cor-primaria: #1d4d46; /* Verde escuro do logo */
-            --cor-secundaria: #8a9e64; /* Verde oliva do logo */
-            --cor-terciaria: #f5f0e1; /* Bege/creme do fundo */
-            --cor-destaque: #b05c3b; /* Terracota/vermelho do gráfico */
-            --cor-texto: #333333;
-            --cor-texto-claro: #ffffff;
-            --cor-fundo: #f5f0e1; /* Bege/creme do fundo */
-            --cor-borda: #d9d0c3;
-            --sombra-suave: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --transicao: all 0.3s ease;
-        }
-
-        /* Reset e estilos gerais */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--cor-texto);
-            background-color: var(--cor-fundo);
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--cor-primaria);
-            transition: var(--transicao);
-        }
-
-        a:hover {
-            color: var(--cor-destaque);
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        /* Cabeçalho */
-        header {
-            background-color: var(--cor-texto-claro);
-            box-shadow: var(--sombra-suave);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--cor-primaria);
-        }
-
-        .logo-text span {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: var(--cor-texto);
-        }
-
-        /* Navegação */
-        .nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--cor-primaria);
-            cursor: pointer;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        nav ul li {
-            margin-left: 25px;
-            position: relative;
-        }
-
-        nav ul li a {
-            color: var(--cor-texto);
-            font-weight: 500;
-            padding: 10px 0;
-            position: relative;
-        }
-
-        nav ul li a:hover {
-            color: var(--cor-primaria);
-        }
-
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--cor-primaria);
-            transition: var(--transicao);
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        /* Dropdown */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: var(--cor-texto-claro);
-            min-width: 200px;
-            box-shadow: var(--sombra-suave);
-            z-index: 1;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .dropdown-content a {
-            display: block;
-            padding: 12px 15px;
-            color: var(--cor-texto);
-            border-bottom: 1px solid var(--cor-borda);
-        }
-
-        .dropdown-content a:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-content a:hover {
-            background-color: var(--cor-terciaria);
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Banner principal / Hero Section */
-        .banner-destaque {
-            background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
-            color: var(--cor-texto-claro);
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        .banner-destaque h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .banner-destaque p {
-            font-size: 1rem;
-            max-width: 800px;
-            margin: 0 auto 20px;
-        }
-
-        .btn { 
-            display: inline-block;
-            background-color: var(--cor-destaque);
-            color: var(--cor-texto-claro);
-            padding: 12px 25px;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: var(--transicao);
-        }
-
-        .btn:hover { 
-            background-color: #9a4e32;  
-            color: var(--cor-texto-claro);
-            transform: translateY(-2px);
-        }
-        
-        /* Sobrescrever estilos do Bootstrap para botões */
-        .card .btn-primary { 
-            background-color: var(--cor-destaque);
-            border-color: var(--cor-destaque);
-            color: var(--cor-texto-claro);
-        }
-        
-        .card .btn-primary:hover {
-            background-color: #9a4e32;
-            border-color: #9a4e32;
-        }
-
-        /* Seções de conteúdo */
-        section {
-            padding: 60px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-title h2 {
-            font-size: 2rem;
-            color: var(--cor-primaria);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 15px;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: var(--cor-destaque);
-        }
-
-        /* Cards de doenças / notícias */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .card { 
-            background-color: var(--cor-texto-claro);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: var(--sombra-suave);
-            transition: var(--transicao);
-            display: flex; 
-            flex-direction: column; 
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-img-top { 
-            height: 200px;
-            overflow: hidden;
-            object-fit: cover;
-        }
-
-        .card-body { 
-            padding: 20px;
-            flex-grow: 1; 
-            display: flex; 
-            flex-direction: column; 
-        }
-
-        .card-title { 
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: var(--cor-primaria);
-        }
-
-        .card-text { 
-            margin-bottom: 15px;
-            color: var(--cor-texto);
-        }
-
-        /* Seção de recursos */
-        .recursos-disponiveis {
-            background-color: var(--cor-terciaria);
-        }
-
-        .recursos-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .recurso-item {
-            text-align: center;
-            padding: 30px 20px;
-            background-color: var(--cor-texto-claro);
-            border-radius: 8px;
-            box-shadow: var(--sombra-suave);
-            transition: var(--transicao);
-        }
-
-        .recurso-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .recurso-icon {
-            font-size: 2.5rem;
-            color: var(--cor-primaria);
-            margin-bottom: 15px;
-        }
-
-        .recurso-item h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: var(--cor-primaria);
-        }
-        
-        /* Estilos específicos para os cards de Notícias em Destaque (blog) */
-        #noticias-destaque .card-title {
-            font-size: 1.1rem;
-            line-height: 1.4em;
-            max-height: 4.2em;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-        
-        #noticias-destaque .card-text {
-            font-size: 0.85rem;
-            line-height: 1.4em;
-            max-height: 4.2em;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-        
-        #noticias-destaque .card-img-top {
-            height: 160px;
-        }
-
-        /* Estilos para cards de Clipping */
-        #clipping-noticias .card {
-            max-height: 360px;
-            overflow: hidden;
-        }
-
-        #clipping-noticias .card-title {
-            font-size: 1rem;
-            line-height: 1.3em;
-            max-height: 3.9em;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        #clipping-noticias .card-text {
-            font-size: 0.8rem;
-            line-height: 1.3em;
-            max-height: 3.9em;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        #clipping-noticias .card-img-top {
-            height: 120px;
-        }
-
-        /* Rodapé */
-        footer {
-            background-color: var(--cor-primaria);
-            color: var(--cor-texto-claro);
-            padding: 60px 0 20px;
-        }
-
-        .footer-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-col h3 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--cor-destaque);
-        }
-
-        .footer-col p {
-            margin-bottom: 15px;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: var(--cor-texto-claro);
-            opacity: 0.8;
-            transition: var(--transicao);
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-            padding-left: 5px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--cor-texto-claro);
-            transition: var(--transicao);
-        }
-
-        .social-links a:hover {
-            background-color: var(--cor-destaque);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        /* Responsividade */
-        @media (max-width: 992px) {
-            .nav-toggle {
-                display: block;
-            }
-
-            nav {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                width: 80%;
-                height: calc(100vh - 80px);
-                background-color: var(--cor-texto-claro);
-                box-shadow: var(--sombra-suave);
-                transition: var(--transicao);
-                overflow-y: auto;
-            }
-
-            nav.active {
-                left: 0;
-            }
-
-            nav ul {
-                flex-direction: column;
-                padding: 20px;
-            }
-
-            nav ul li {
-                margin: 0;
-                margin-bottom: 15px;
-            }
-
-            .dropdown-content {
-                position: static;
-                display: none;
-                box-shadow: none;
-                padding-left: 20px;
-            }
-
-            .dropdown.active .dropdown-content { 
-                display: block;
-            }
-
-            .banner-destaque h1 {
-                font-size: 2rem;
-            }
-
-            .banner-destaque p {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-container {
-                padding: 10px 0; 
-            }
-            
-            nav { 
-                top: 60px; 
-                height: calc(100vh - 60px);
-            }
-
-            .logo img {
-                height: 40px;
-            }
-
-            .logo-text {
-                font-size: 1.2rem;
-            }
-
-            .banner-destaque {
-                padding: 60px 0;
-            }
-
-            .section-title h2 {
-                font-size: 1.8rem;
-            }
-
-            .cards-grid, .recursos-grid { 
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <img src="images/novagave.png" alt="Logo GAVE">
-                <div class="logo-text">
-                    GAVE
-                    <span>Guia de Ações em Vigilância Epidemiológica</span>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Site da pesquisa de doutorado sobre leptospirose no Rio de Janeiro (2007-2024). Dados, análises e materiais sobre o impacto das desigualdades e a invisibilidade da doença. Pesquisa de Amaro Viana Neto, IESC/UFRJ." />
+  <meta name="keywords" content="leptospirose, Rio de Janeiro, saúde pública, vigilância epidemiológica, doenças negligenciadas, justiça social, UFRJ, IESC, Amaro Viana Neto, subnotificação, desigualdade social" />
+  <meta name="author" content="Prof. Amaro Viana Neto" />
+  
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="[URL_DO_SEU_SITE_QUANDO_ONLINE]" />
+  <meta property="og:title" content="Leptospirose RJ (2007-2024): Tornando Visível o Invisível | Pesquisa IESC/UFRJ" />
+  <meta property="og:description" content="Site da pesquisa de doutorado sobre leptospirose no Rio de Janeiro (2007-2024). Dados, análises e materiais sobre o impacto das desigualdades e a invisibilidade da doença." />
+  <meta property="og:image" content="[LINK_PARA_IMAGEM_OG_SITE_LEPTOSPIROSE.JPG]" />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="[URL_DO_SEU_SITE_QUANDO_ONLINE]" />
+  <meta name="twitter:title" content="Leptospirose RJ (2007-2024): Tornando Visível o Invisível | Pesquisa IESC/UFRJ" />
+  <meta name="twitter:description" content="Site da pesquisa de doutorado sobre leptospirose no Rio de Janeiro (2007-2024). Dados, análises e materiais sobre o impacto das desigualdades e a invisibilidade da doença." />
+  <meta name="twitter:image" content="[LINK_PARA_IMAGEM_TWITTER_SITE_LEPTOSPIROSE.JPG]" />
+  
+  <title>Leptospirose RJ (2007-2024): Tornando Visível o Invisível | Pesquisa IESC/UFRJ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  
+  <link rel="stylesheet" href="styles.css"> </head>
+<body style="background-color: #F5F2EC;"> <header style="background-color: #1E5F74; color: white; padding: 40px 20px; text-align: center;"> <h1 style="font-family: 'Montserrat', sans-serif; font-weight: 700;">Leptospirose no Rio de Janeiro</h1>
+    <div class="mt-3" style="font-family: 'Lato', sans-serif; font-size: 1.1em; border-top: 1px solid #F5F2EC; border-bottom: 1px solid #F5F2EC; padding: 15px 0; margin: 20px auto; max-width: 700px;">
+                <p class="mb-1">Uma endemia persistente</p>
+     </div>
+     </header>
+
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top mb-4" style="background-color: #3B3B3B;"> <div class="container-fluid">
+      <a class="navbar-brand" href="index.html" style="font-family: 'Montserrat', sans-serif; font-weight: 500;">LeptoRJ Vis</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="index.html">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#secao-sobre-pesquisa">Sobre a Pesquisa</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#secao-dados-indicadores">Dados e Indicadores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#secao-comunidade-acao">Comunidade em Ação</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#secao-rede-apoio">Rede de Apoio</a>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" href="#blog-section">Blog/Notícias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#clipping-section">Leptospirose na Mídia</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          <a href="curriculo.html" class="btn btn-outline-light me-2" aria-label="Currículo do Prof. Amaro Neto">📄 Currículo</a>
+          <a href="https://github.com/veneto9" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light" aria-label="Perfil no GitHub">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-4">
+    <section class="secao mb-5">
+      <div class="row">
+        <div class="col-md-8">
+          <p style="color: #3B3B3B;">Este site nasce como contrapartida pública de uma pesquisa de doutorado realizada no Instituto de Estudos em Saúde Coletiva (IESC/UFRJ). Nosso objetivo é simples e urgente: tornar visível aquilo que foi sistematicamente negligenciado.</p>
+          <p style="color: #3B3B3B;">A leptospirose no estado do Rio de Janeiro não é apenas uma emergência sanitária — é um marcador de injustiça social e invisibilidade institucional.</p>
+          <p style="color: #3B3B3B;"><strong>Coordenação:</strong> Amaro Neto</p>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header text-white" style="background-color: #1E5F74;"> <h3 class="h5 mb-0">Acesso Rápido</h3>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <a href="#secao-dados-indicadores" class="btn btn-outline-primary btn-lg">🔍 Ver os Dados</a>
+                <a href="#secao-comunidade-acao" class="btn btn-outline-primary btn-lg">🫂 Comunidade em Ação</a>
+                <a href="#" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modalOQueFazer">📣 O que Você Pode Fazer</a>
+                <a href="#secao-sobre-pesquisa" class="btn btn-outline-primary btn-lg">🧪 Sobre a Pesquisa</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="secao-sobre-pesquisa" class="secao mb-5" style="background-color: #F5F2EC; padding: 20px; border-radius: 8px;">
+        <div class="container">
+            <h2 class="border-bottom pb-2 mb-4" style="color: #3B3B3B;"><i class="bi bi-journal-text"></i> Sobre a Pesquisa</h2>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header" style="background-color: #E0E0E0;">
+                    <h3 class="h5 mb-0" style="color: #3B3B3B;">O Que Investigamos</h3>
+                  </div>
+                  <div class="card-body">
+                    <p style="color: #3B3B3B;">Análise da qualidade da vigilância epidemiológica da leptospirose de 2007 a 2024 no estado do Rio de Janeiro, identificando padrões espaciais, desigualdades sociodemográficas e lacunas nos registros de notificação da doença. [cite: 51]</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header" style="background-color: #E0E0E0;">
+                    <h3 class="h5 mb-0" style="color: #3B3B3B;">Por Que é Negligenciada?</h3>
+                  </div>
+                  <div class="card-body">
+                    <p style="color: #3B3B3B;">A doença atinge principalmente populações pobres, negras, expostas a alagamentos, ausência de saneamento e moradia precária. [cite: 3, 42] A subnotificação contribui para sua invisibilidade institucional e perpetua desigualdades sanitárias. [cite: 3]</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header" style="background-color: #E0E0E0;">
+                    <h3 class="h5 mb-0" style="color: #3B3B3B;">Principais Achados</h3>
+                  </div>
+                  <div class="card-body">
+                    <ul style="color: #3B3B3B;">
+                      <li>Baixa qualidade dos registros de notificação, com campos essenciais (como raça/cor, escolaridade, ocupação e dados laboratoriais) apresentando preenchimento insatisfatório. [cite: 5, 298, 384]</li>
+                      <li>Alta letalidade da doença (global de 17,4% entre 2007-2020 [cite: 125]), especialmente entre idosos, homens, pretos, pardos e indivíduos com menor escolaridade. [cite: 125, 128]</li>
+                      <li>Subnotificação crítica de casos e óbitos, comprometendo a real mensuração da carga da doença. [cite: 7, 300, 437]</li>
+                      <li>Forte correlação da ocorrência de casos com indicadores de desigualdade social (IDHM, Gini) e vulnerabilidade socioambiental. [cite: 6, 301, 462]</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header" style="background-color: #E0E0E0;">
+                    <h3 class="h5 mb-0" style="color: #3B3B3B;">Propostas da Pesquisa</h3>
+                  </div>
+                  <div class="card-body">
+                    <ul style="color: #3B3B3B;">
+                      <li>Implementação de um plano de ação intersetorial para vigilância e controle. [cite: 544, 559, 560]</li>
+                      <li>Criação de comitês locais de vigilância integrada com participação comunitária. [cite: 544, 560]</li>
+                      <li>Devolução sistemática dos dados e achados às comunidades afetadas e conselhos de saúde. [cite: 544]</li>
+                      <li>Manutenção deste site como um canal permanente de comunicação e monitoramento. [cite: 544]</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="border-bottom pb-2 mt-5 mb-4" style="color: #3B3B3B;">Downloads da Pesquisa</h3>
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+              <div class="col">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h4 class="card-title h5" style="color: #1E5F74;">📥 Resumo Executivo da Pesquisa</h4>
+                    <p class="card-text" style="color: #3B3B3B;">Principais resultados, discussões e recomendações da tese de doutorado.</p>
+                  </div>
+                  <div class="card-footer bg-transparent border-top-0">
+                    <a href="[CAMINHO_PARA_SEU_RESUMO_EXECUTIVO.PDF]" class="btn btn-sm text-white" style="background-color: #1E5F74;" download>Baixar PDF</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h4 class="card-title h5" style="color: #1E5F74;">📥 Tese Completa</h4>
+                    <p class="card-text" style="color: #3B3B3B;">Documento integral da pesquisa "A Negligência Documentada: Como a Subnotificação da Leptospirose (Re) Produz Injustiça Sanitária".</p>
+                  </div>
+                  <div class="card-footer bg-transparent border-top-0">
+                    <a href="[CAMINHO_PARA_SUA_TESE_COMPLETA.PDF]" class="btn btn-sm text-white" style="background-color: #1E5F74;" download>Baixar PDF</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5 text-center" style="color: #3B3B3B;">
+              <p><strong>Tutulo da Pesquisa:</strong> A Negligência Documentada: Como a Subnotificação da Leptospirose (Re)Produz Injustiça Sanitária</p>
+              <p><strong>Orientador:</strong> __</p>
+              <p><strong>Apoio Institucional:</strong>CAPES</p>
+            </div>
+        </div>
+    </section>
+    <section id="secao-dados-indicadores" class="secao mb-5" style="background-color: #F5F2EC; padding: 20px; border-radius: 8px;">
+      <div class="container">
+        <h2 class="border-bottom pb-2 mb-4" style="color: #3B3B3B;"><i class="bi bi-bar-chart-line-fill"></i> Dados e Indicadores: Leptospirose no RJ (2007-2024)</h2>
+
+        <div class="card mb-4">
+          <div class="card-header text-white" style="background-color: #1E5F74;">
+            <h3 class="h5 mb-0">Filtre os Dados</h3>
+          </div>
+          <div class="card-body">
+            <form id="filters-data-form">
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="periodo-select" class="form-label" style="color: #3B3B3B;">Ano</label>
+                  <select class="form-select" id="periodo-select" aria-label="Selecione o Ano">
+                    <option value="2007-2024" selected>Todo o período (2007-2024)</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                    <option value="2011">2011</option>
+                    <option value="2010">2010</option>
+                    <option value="2009">2009</option>
+                    <option value="2008">2008</option>
+                    <option value="2007">2007</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="regiao-rj-select" class="form-label" style="color: #3B3B3B;">Região do Estado do RJ</label>
+                  <select class="form-select" id="regiao-rj-select" aria-label="Selecione a Região do Estado do RJ">
+                    <option value="todas" selected>Todas as Regiões</option>
+                    <option value="metropolitana">Metropolitana</option>
+                    <option value="noroeste">Noroeste Fluminense</option>
+                    <option value="litoranea">Baixada Litorânea</option>
+                    <option value="norte">Norte Fluminense</option>
+                    <option value="serrana">Serrana</option>
+                    <option value="medio-paraiba">Médio Paraíba</option>
+                    <option value="costa-verde">Costa Verde</option>
+                    <option value="centro-sul">Centro-Sul Fluminense</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="indicador-select" class="form-label" style="color: #3B3B3B;">Indicador</label>
+                  <select class="form-select" id="indicador-select" aria-label="Selecione o Indicador">
+                    <option value="casos_confirmados" selected>Casos Confirmados</option>
+                    <option value="incidencia">Taxa de Incidência (por 100.000 hab.)</option>
+                    <option value="obitos">Óbitos</option>
+                    <option value="letalidade">Taxa de Letalidade (%)</option>
+                    <option value="percentual_encerramento">Percentual de Encerramento de Casos (%)</option>
+                  </select>
+                </div>
+              </div>
+              <button type="submit" class="btn text-white" style="background-color: #3C6E52;">Aplicar Filtros</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-white h-100" style="background-color: #1E5F74;">
+              <div class="card-body text-center">
+                <h3 class="card-title h5">Total de Casos Confirmados</h3>
+                <p class="display-5 mb-0" id="total-cases-leptos">4.179</p>
+                <p class="small mt-1">(RJ, 2007-2024) [cite: 381]</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-white h-100" style="background-color: #A11E1E;">
+              <div class="card-body text-center">
+                <h3 class="card-title h5">Total de Óbitos (SINAN)</h3>
+                <p class="display-5 mb-0" id="deaths-leptos">[~554+]</p> <p class="small mt-1">(RJ, 2007-2024)</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-dark h-100" style="background-color: #F2C94C;">
+              <div class="card-body text-center">
+                <h3 class="card-title h5">Taxa de Letalidade Média</h3>
+                <p class="display-5 mb-0" id="lethality-leptos">[~17,4%]</p> <p class="small mt-1">(%) (RJ, 2007-2024)</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card text-white h-100" style="background-color: #3C6E52;">
+              <div class="card-body text-center">
+                <h3 class="card-title h5">Qualidade dos Registros</h3>
+                <p class="display-5 mb-0" id="quality-leptos">BAIXA</p>
+                <p class="small mt-1">(Campos Essenciais) [cite: 5, 468]</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card mb-4">
+              <div class="card-header" style="background-color: #E0E0E0;">
+                <h3 class="h5 mb-0" style="color: #3B3B3B;">Evolução Anual dos Casos Confirmados (RJ, 2007-2023)</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="leptos-trend-chart" height="300" aria-label="Gráfico de tendência temporal de casos de leptospirose" role="img"></canvas>
                 </div>
             </div>
-            <button class="nav-toggle" aria-label="Abrir menu">☰</button>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Início</a></li>
-                    <li class="dropdown">
-                        <a href="#">Doenças</a>
-                        <div class="dropdown-content">
-                            <a href="dengue.html">Dengue</a>
-                            <a href="sifilis-adquirida.html">Sífilis Adquirida</a>
-                            <a href="febre-maculosa.html">Febre Maculosa</a>
-                            <a href="candidiase.html">Candidiase</a>
-                            <a href="doencas-de-notificacao-compulsoria.html">Doenças de Notificação Compulsória</a>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-4">
+              <div class="card-header" style="background-color: #E0E0E0;">
+                <h3 class="h5 mb-0" style="color: #3B3B3B;">Letalidade por Grupo de Risco</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="leptos-distribution-chart" height="300" aria-label="Gráfico de distribuição da letalidade por grupo de risco" role="img"></canvas>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-header text-white" style="background-color: #705144;">
+            <h3 class="h5 mb-0">Mapa Interativo da Leptospirose no RJ (2007-2024)</h3>
+          </div>
+          <div class="card-body">
+            <p style="color: #3B3B3B;">Visualização da distribuição espacial de casos confirmados, incidência e letalidade por município.</p>
+            <div class="ratio ratio-16x9">
+              <div id="map-container-leptos">
+                <img src="https://via.placeholder.com/800x400?text=Mapa+Interativo+Leptospirose+RJ" class="img-fluid" alt="Mapa de distribuição geográfica de casos de leptospirose no Rio de Janeiro">
+                </div>
+            </div>
+            <div class="mt-3">
+              <p class="text-muted small">Passe o mouse sobre os municípios para ver detalhes. Utilize os controles (a serem implementados com a biblioteca de mapas) para zoom, seleção de camadas (casos, incidência, letalidade) e filtros por período/região.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5 mb-3">
+          <a href="[LINK_BASE_DE_DADOS.CSV_OU_XLSX]" class="btn text-white m-2" style="background-color: #1E5F74;" download>📥 Baixar base de dados (.csv/.xlsx)</a>
+          <a href="[LINK_RELATORIO_TECNICO_SIMPLIFICADO.PDF]" class="btn text-white m-2" style="background-color: #1E5F74;" target="_blank" rel="noopener noreferrer">📊 Ver relatório técnico simplificado</a>
+          <a href="#" class="btn text-dark m-2" style="background-color: #F2C94C;" data-bs-toggle="modal" data-bs-target="#modalInterpretarIndicadores">💡 Como interpretar os indicadores?</a>
+        </div>
+      </div>
+    </section>
+    <section id="secao-comunidade-acao" class="secao mb-5" style="padding: 20px; border-radius: 8px; background-color: #FFFFFF;"> <div class="container">
+          <h2 class="border-bottom pb-2 mb-4" style="color: #3B3B3B;"><i class="bi bi-people-fill"></i> Comunidade em Ação: Ferramentas para Transformação</h2>
+          
+          <h3 style="color: #1E5F74;">Materiais de Apoio</h3>
+          <p style="color: #3B3B3B;">Faça o download de materiais educativos e de apoio para ações locais de conscientização e vigilância sobre a leptospirose.</p>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                  <h4 class="card-title h5" style="color: #1E5F74;">📘 Cartilha "Entenda a Leptospirose"</h4>
+                  <p class="card-text small flex-grow-1" style="color: #3B3B3B;">Informações claras e acessíveis sobre a doença, transmissão, sintomas, prevenção e o que fazer.</p>
+                  <a href="[LINK_CARTILHA.PDF]" class="btn btn-sm text-white mt-auto" style="background-color: #3C6E52;" download>Baixar PDF</a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                  <h4 class="card-title h5" style="color: #1E5F74;">🧾 Miniguia para Conselhos de Saúde</h4>
+                  <p class="card-text small flex-grow-1" style="color: #3B3B3B;">Orientações para conselheiros de saúde sobre como utilizar dados e mobilizar a comunidade.</p>
+                  <a href="[LINK_MINIGUIA_CONSELHOS.PDF]" class="btn btn-sm text-white mt-auto" style="background-color: #3C6E52;" download>Baixar PDF</a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                  <h4 class="card-title h5" style="color: #1E5F74;">🖥️ Apresentação para Escolas</h4>
+                  <p class="card-text small flex-grow-1" style="color: #3B3B3B;">Slides didáticos para professores e alunos sobre prevenção da leptospirose no ambiente escolar e doméstico.</p>
+                  <a href="[LINK_APRESENTACAO_ESCOLAS.PPTX_OU_PDF]" class="btn btn-sm text-white mt-auto" style="background-color: #3C6E52;" download>Baixar Material</a>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card h-100">
+                <div class="card-body d-flex flex-column">
+                  <h4 class="card-title h5" style="color: #1E5F74;">📄 Ficha de Vigilância Popular</h4>
+                  <p class="card-text small flex-grow-1" style="color: #3B3B3B;">Modelo simplificado para que a comunidade possa registrar e comunicar situações de risco.</p>
+                  <a href="[LINK_FICHA_VIGILANCIA.PDF]" class="btn btn-sm text-white mt-auto" style="background-color: #3C6E52;" download>Baixar PDF</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mt-5" style="background-color: #F5F2EC;">
+            <div class="card-body">
+              <h3 class="card-title" style="color: #1E5F74;">Quer Fortalecer a Ação Local?</h3>
+              <p style="color: #3B3B3B;">“Tem interesse nos códigos de análise, métodos utilizados ou quer discutir os dados da sua cidade? Preencha o formulário abaixo e entraremos em contato para compartilhar informações e trocar ideias com você.”</p>
+              <form id="form-kit-digital" action="https://formsubmit.co/[SEU_EMAIL_AQUI]" method="POST"> <input type="hidden" name="_subject" value="Novo Pedido de Kit Digital - Site Leptospirose RJ">
+                <input type="hidden" name="_captcha" value="false"> <input type="hidden" name="_next" value="[LINK_PAGINA_OBRIGADO_SE_TIVER]">
+
+                <div class="mb-3">
+                  <label for="nomeCompleto" class="form-label" style="color: #3B3B3B;">Nome Completo:</label>
+                  <input type="text" class="form-control" id="nomeCompleto" name="nome" required>
+                </div>
+                <div class="mb-3">
+                  <label for="emailKit" class="form-label" style="color: #3B3B3B;">Email:</label>
+                  <input type="email" class="form-control" id="emailKit" name="email" required>
+                </div>
+                <div class="mb-3">
+                  <label for="cidadeKit" class="form-label" style="color: #3B3B3B;">Sua Cidade/Município:</label>
+                  <input type="text" class="form-control" id="cidadeKit" name="cidade" required>
+                </div>
+                <div class="mb-3">
+                  <label for="atuacaoKit" class="form-label" style="color: #3B3B3B;">Sua Área de Atuação (Ex: Conselho de Saúde, Escola, Liderança Comunitária):</label>
+                  <input type="text" class="form-control" id="atuacaoKit" name="atuacao">
+                </div>
+                <button type="submit" class="btn text-white" style="background-color: #1E5F74;">Receber Kit Digital</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <h4 style="color: #1E5F74;">Painéis Locais (QR Codes)</h4>
+              <p style="color: #3B3B3B;">Aponte a câmera do seu celular para o QR Code da sua região/município (quando disponível) para acessar dados específicos e materiais direcionados.</p>
+              <div class="text-center">
+                <img src="https://via.placeholder.com/150?text=QR+Code+Exemplo+1" alt="QR Code Exemplo 1" class="m-2 img-thumbnail">
+                <img src="https://via.placeholder.com/150?text=QR+Code+Exemplo+2" alt="QR Code Exemplo 2" class="m-2 img-thumbnail">
+                <p class="small text-muted">Em breve, QR Codes específicos por área.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h4 style="color: #1E5F74;">Calendário Temático Anual</h4>
+              <p style="color: #3B3B3B;">Sugestões de ações mensais para manter a comunidade engajada na prevenção e controle da leptospirose:</p>
+              <ul style="color: #3B3B3B; font-size: 0.9em; padding-left: 20px;">
+                <li><strong>Janeiro-Março (Período Chuvoso):</strong> Alerta máximo! Campanhas sobre riscos de enchentes e cuidados com água/lama contaminada.</li>
+                <li><strong>Abril:</strong> Dia Mundial da Saúde – Articular com ações de saneamento.</li>
+                <li><strong>Maio:</strong> Reuniões com lideranças comunitárias para avaliação das áreas de risco.</li>
+                <li><strong>Junho-Agosto (Período Seco):</strong> Ações de limpeza de terrenos, controle de roedores, educação em escolas.</li>
+                <li><strong>Setembro:</strong> Preparação para o próximo período chuvoso, revisão de planos de contingência.</li>
+                <li><strong>Outubro-Dezembro:</strong> Intensificar informação sobre primeiros sintomas e busca por atendimento médico.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </section>
+    <section id="secao-rede-apoio" class="secao mb-5" style="background-color: #F5F2EC; padding: 20px; border-radius: 8px;">
+        <div class="container">
+          <h2 class="border-bottom pb-2 mb-4" style="color: #3B3B3B;"><i class="bi bi-heart-half"></i> Fortaleça esta Rede: Apoie e Colabore</h2>
+          <div class="row">
+            <div class="col-md-7">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <h3 class="card-title" style="color: #1E5F74;">🖊️ Assine o Apoio ao Projeto</h3>
+                  <p style="color: #3B3B3B;">Sua assinatura demonstra a importância de dar visibilidade à leptospirose e de fortalecer as ações de vigilância e cuidado. Junte-se a nós nesta causa pela saúde pública e justiça social.</p>
+                  <a href="[LINK_PARA_FORMULARIO_DE_APOIO_EXTERNO_EX_GOOGLE_FORMS]" class="btn text-white" style="background-color: #3C6E52;" target="_blank" rel="noopener noreferrer">Quero Apoiar o Projeto</a>
+                  <p class="small text-muted mt-2">Ao clicar, você será direcionado a um formulário de apoio. Seu nome/instituição poderá ser listado(a) em agradecimentos futuros, com sua permissão.</p>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title" style="color: #1E5F74;">🤝 Chamada à Colaboração e Replicação</h3>
+                  <p style="color: #3B3B3B;">Acreditamos no poder da colaboração. Se você representa uma instituição, coletivo, ou é um pesquisador/profissional interessado em:</p>
+                  <ul style="color: #3B3B3B;">
+                    <li>Replicar esta proposta de monitoramento e vigilância popular em sua localidade;</li>
+                    <li>Desenvolver projetos conjuntos de pesquisa ou intervenção;</li>
+                    <li>Compartilhar dados ou experiências sobre a leptospirose;</li>
+                    <li>Contribuir com materiais educativos ou técnicos.</li>
+                  </ul>
+                  <p style="color: #3B3B3B;">Entre em contato! Utilize o formulário na seção "Comunidade em Ação" para solicitar o kit digital e iniciar uma conversa, ou envie um e-mail para <a href="mailto:amaroneto@ufrj.br" style="color: #1E5F74;">amaroneto@ufrj.br</a>.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <div class="card h-100">
+                <div class="card-header text-white" style="background-color: #705144;">
+                  <h3 class="h5 mb-0">🧩 Nossos Parceiros e Apoiadores</h3>
+                </div>
+                <div class="card-body">
+                  <p style="color: #3B3B3B;">Agradecemos a todos que contribuem para tornar este trabalho possível e ampliar seu alcance (lista em construção):</p>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item" style="background-color: transparent; color: #3B3B3B;">Instituto de Estudos em Saúde Coletiva (IESC/UFRJ)</li>
+                    <li class="list-group-item" style="background-color: transparent; color: #3B3B3B;">[Nome de ONG Parceira, se houver]</li>
+                    <li class="list-group-item" style="background-color: transparent; color: #3B3B3B;">[Universidade/Centro de Pesquisa Parceiro, se houver]</li>
+                    <li class="list-group-item" style="background-color: transparent; color: #3B3B3B;">[Conselho de Saúde Local/Estadual Apoiador, se houver]</li>
+                  </ul>
+                  <p class="mt-3" style="color: #3B3B3B;"><em>Se sua instituição gostaria de ser uma parceira, entre em contato!</em></p>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+    <section id="blog-section" class="secao mb-5" style="background-color: #FFFFFF; padding: 20px; border-radius: 8px;">
+        <div class="container">
+            <h2 class="border-bottom pb-2 mb-4" style="color: #3B3B3B;"><i class="bi bi-pencil-square"></i> Blog: Análises e Atualizações</h2>
+            <p style="color: #3B3B3B;">Acompanhe aqui publicações, análises mais detalhadas dos dados, notas sobre a pesquisa e notícias relevantes sobre a leptospirose e a saúde coletiva.</p>
+            <div id="blog-posts-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <p class="text-center w-100">Carregando últimas publicações...</p>
+            </div>
+        </div>
+    </section>
+    <section id="clipping-section" class="secao mb-5" style="background-color: #F5F2EC; padding: 20px; border-radius: 8px;">
+        <div class="container">
+            <h2 class="border-bottom pb-2 mb-4" style="color: #3B3B3B;"><i class="bi bi-newspaper"></i> Leptospirose na Mídia</h2>
+            <p style="color: #3B3B3B;">Seleção de notícias e reportagens sobre a leptospirose, seus impactos e as discussões sobre o tema na imprensa.</p>
+            <div id="clipping-posts-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                 <p class="text-center w-100">Carregando notícias...</p>
+            </div>
+        </div>
+    </section>
+    </main> <footer class="pt-5 pb-4 text-white" style="background-color: #3B3B3B;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 mb-4">
+          <h5 style="color: #F5F2EC;">Acesso Aberto e Transparência</h5>
+          <p class="small" style="color: #F5F2EC;">Compromisso com a ciência aberta e a democratização da informação em saúde.</p>
+          <ul class="list-unstyled">
+            <li><a href="#" data-bs-toggle="modal" data-bs-target="#modalGlossario" class="text-decoration-none" style="color: #F2C94C;">📘 Glossário de Termos Técnicos</a></li>
+            <li><a href="[LINK_PARA_SEUS_SCRIPTS_R_NO_GITHUB_OU_PASTA]" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: #F2C94C;">💻 Scripts R Utilizados na Pesquisa</a></li>
+          </ul>
+          <h6 class="mt-3" style="color: #F5F2EC;">Links Úteis (Fontes de Dados):</h6>
+          <ul class="list-unstyled small">
+            <li><a href="https://datasus.saude.gov.br/sistemas-e-aplicativos/epidemiologicos/sinan/" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: #F2C94C;">📊 SINAN (Sistema de Informação de Agravos de Notificação)</a></li>
+            <li><a href="http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/obt10uf.def" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: #F2C94C;">⚰️ SIM (Sistema de Informações sobre Mortalidade)</a></li>
+            <li><a href="http://www.atlasbrasil.org.br/" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: #F2C94C;">📍 Atlas do Desenvolvimento Humano no Brasil (IDHM, Gini)</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <h5 style="color: #F5F2EC;">Contato</h5>
+          <ul class="list-unstyled">
+            <li><a href="mailto:amaroneto@ufrj.br" class="text-decoration-none" style="color: #F2C94C;">📫 amaroneto@ufrj.br</a></li>
+            <li><a href="https://twitter.com/amaroveneto" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: #F2C94C;">🐦 @amaroveneto (Twitter/X)</a></li>
+            <li><a href="https://instagram.com/amarovneto" target="_blank" rel="noopener noreferrer" class="text-decoration-none" style="color: #F2C94C;">📸 @amarovneto (Instagram)</a></li>
+            <li><span style="color: #F5F2EC;">📍 Rio de Janeiro, Brasil</span></li>
+          </ul>
+        </div>
+        
+        <div class="col-md-3 mb-4">
+          <h5 style="color: #F5F2EC;">Navegação</h5>
+          <ul class="list-unstyled">
+            <li><a href="#secao-sobre-pesquisa" class="nav-link px-0" style="color: #F2C94C;">Sobre a Pesquisa</a></li>
+            <li><a href="#secao-dados-indicadores" class="nav-link px-0" style="color: #F2C94C;">Dados e Indicadores</a></li>
+            <li><a href="#secao-comunidade-acao" class="nav-link px-0" style="color: #F2C94C;">Comunidade em Ação</a></li>
+            <li><a href="#secao-rede-apoio" class="nav-link px-0" style="color: #F2C94C;">Rede de Apoio</a></li>
+            <li><a href="curriculo.html" class="nav-link px-0" style="color: #F2C94C;">📄 Currículo Amaro Neto</a></li>
+            <li><a href="https://github.com/veneto9" target="_blank" rel="noopener noreferrer" class="nav-link px-0" style="color: #F2C94C;"><i class="bi bi-github"></i> GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr style="border-color: #705144;">
+      <div class="text-center pt-3">
+        <p class="small" style="color: #F5F2EC;">&copy; <script>document.write(new Date().getFullYear())</script> Amaro Viana Neto. Pesquisa desenvolvida no âmbito do Instituto de Estudos em Saúde Coletiva (IESC/UFRJ).</p>
+        <p class="small" style="color: #F5F2EC;">Este site é uma contrapartida pública da tese de doutorado e visa promover o acesso à informação sobre a leptospirose no Rio de Janeiro.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="modalOQueFazer" tabindex="-1" aria-labelledby="modalOQueFazerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #F2C94C; color: #3B3B3B;">
+          <h5 class="modal-title" id="modalOQueFazerLabel"><i class="bi bi-megaphone-fill"></i> Leptospirose: O que VOCÊ Pode Fazer?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="background-color: #F5F2EC; color: #3B3B3B;">
+          <p>A prevenção e o controle da leptospirose são responsabilidades de todos. Veja como você pode contribuir para reduzir o impacto dessa doença:</p>
+          <hr>
+          <h6><strong><i class="bi bi-shield-check"></i> Para a População em Geral:</strong></h6>
+          <ul>
+            <li><strong>Evite contato com água ou lama potencialmente contaminadas:</strong> Principalmente após enchentes ou em locais com presença de roedores. Se o contato for inevitável, use equipamentos de proteção individual (botas e luvas de borracha).</li>
+            <li><strong>Proteja os alimentos e a água:</strong> Guarde alimentos em recipientes bem fechados e elevados do chão. Ferva ou clore a água para beber, cozinhar e higiene pessoal, caso não seja tratada.</li>
+            <li><strong>Cuidado com o lixo:</strong> Acondicione o lixo em sacos plásticos bem fechados e em locais altos, fora do alcance de roedores, até a coleta. Não jogue lixo em terrenos baldios ou córregos.</li>
+            <li><strong>Controle de roedores:</strong> Mantenha a casa e o quintal limpos, sem entulhos e materiais que possam servir de abrigo para ratos. Use produtos raticidas de forma segura ou acione o serviço de controle de zoonoses do seu município.</li>
+            <li><strong>Após enchentes:</strong> Lave e desinfete pisos, paredes, móveis e objetos que tiveram contato com a água da enchente, utilizando água sanitária (hipoclorito de sódio a 2,5%) na proporção de 1 copo (200ml) para um balde de 20 litros de água.</li>
+            <li><strong>Fique atento aos sintomas:</strong> Febre alta, dor de cabeça, dores musculares (principalmente nas panturrilhas), vômitos e, em casos mais graves, icterícia (pele e olhos amarelados) e sangramentos. Procure um serviço de saúde imediatamente se apresentar esses sintomas e informe sobre possível contato com água ou lama de enchentes ou locais com ratos.</li>
+          </ul>
+          <hr>
+          <h6><strong><i class="bi bi-hospital"></i> Para Profissionais de Saúde:</strong></h6>
+          <ul>
+            <li><strong>Suspeita clínica é fundamental:</strong> Especialmente em pacientes com histórico de exposição a situações de risco (enchentes, contato com esgoto, áreas com infestação de roedores) e que apresentem quadro febril agudo.</li>
+            <li><strong>Notificação compulsória e imediata:</strong> A leptospirose é um agravo de notificação compulsória. A notificação rápida ao SINAN é essencial para a vigilância epidemiológica e para o desencadeamento de ações de controle.</li>
+            <li><strong>Manejo clínico adequado:</strong> Iniciar o tratamento com antibióticos o mais precocemente possível melhora o prognóstico. Atentar para sinais de gravidade que indiquem necessidade de internação.</li>
+            <li><strong>Orientação ao paciente:</strong> Fornecer informações sobre a doença, como evitar reexposição e a importância de concluir o tratamento.</li>
+          </ul>
+          <hr>
+          <h6><strong><i class="bi bi-building-gear"></i> Para Gestores Públicos e Lideranças Comunitárias:</strong></h6>
+          <ul>
+            <li><strong>Invista em saneamento básico:</strong> Cobrar e implementar políticas públicas de acesso à água tratada, coleta e tratamento de esgoto, e drenagem urbana adequada são medidas estruturais fundamentais.</li>
+            <li><strong>Promova moradia digna:</strong> Reduzir áreas de risco e melhorar as condições de habitação em comunidades vulneráveis diminui a exposição à leptospirose.</li>
+            <li><strong>Utilize os dados deste site:</strong> Monitore os indicadores da sua localidade, identifique áreas de maior risco e planeje ações preventivas e de controle direcionadas.</li>
+            <li><strong>Educação e comunicação em saúde:</strong> Promova campanhas informativas contínuas, especialmente antes e durante os períodos chuvosos.</li>
+            <li><strong>Articulação intersetorial:</strong> Envolva diferentes setores (saúde, meio ambiente, defesa civil, educação, assistência social) em um plano de ação integrado.</li>
+            <li><strong>Fortaleça a vigilância:</strong> Garanta recursos para a vigilância epidemiológica, ambiental e para o controle de zoonoses (roedores).</li>
+          </ul>
+        </div>
+        <div class="modal-footer" style="background-color: #E0E0E0;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalInterpretarIndicadores" tabindex="-1" aria-labelledby="modalInterpretarIndicadoresLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #1E5F74; color: white;">
+          <h5 class="modal-title" id="modalInterpretarIndicadoresLabel">💡 Como Interpretar os Indicadores de Leptospirose</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="background-color: #F5F2EC; color: #3B3B3B;">
+          <p>Aqui você encontrará explicações simples sobre os principais indicadores utilizados neste painel para monitorar a leptospirose no estado do Rio de Janeiro.</p>
+          <hr>
+          <h6><strong>Casos Confirmados:</strong></h6>
+          <p>Número total de pessoas que tiveram o diagnóstico de leptospirose confirmado por critério laboratorial ou clínico-epidemiológico em um determinado período e local.</p>
+          <h6><strong>Taxa de Incidência:</strong></h6>
+          <p>Mede o risco de adoecimento em uma população. Calculada como: (Número de casos novos em um período / População sob risco no mesmo período) x 100.000 habitantes. Ajuda a comparar a ocorrência da doença entre diferentes localidades ou períodos, ajustando pelo tamanho da população.</p>
+          <h6><strong>Óbitos:</strong></h6>
+          <p>Número total de mortes em que a leptospirose foi a causa básica.</p>
+          <h6><strong>Taxa de Letalidade:</strong></h6>
+          <p>Proporção de pessoas diagnosticadas com leptospirose que vieram a óbito pela doença. Calculada como: (Número de óbitos por leptospirose / Número de casos confirmados de leptospirose) x 100. Indica a gravidade da doença ou a efetividade do tratamento e diagnóstico oportuno.</p>
+          <h6><strong>Percentual de Encerramento de Casos:</strong></h6>
+          <p>Proporção de casos notificados que tiveram sua investigação concluída e situação final definida (confirmado, descartado, etc.) dentro do prazo preconizado. Um baixo percentual pode indicar sobrecarga do sistema de vigilância ou dificuldades na investigação.</p>
+          <h6><strong>Qualidade dos Registros:</strong></h6>
+          <p>Refere-se ao quão completos e corretos são os dados preenchidos nas fichas de notificação. Baixa qualidade (muitos campos em branco, ignorados ou inconsistentes) dificulta a compreensão do perfil da doença e dos afetados, levando à subestimação do problema.</p>
+          <hr>
+          <p class="small"><strong>Fonte das definições:</strong> Adaptado de guias de vigilância epidemiológica e da pesquisa de doutorado base deste site.</p>
+        </div>
+        <div class="modal-footer" style="background-color: #E0E0E0;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalGlossario" tabindex="-1" aria-labelledby="modalGlossarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #1E5F74; color: white;">
+          <h5 class="modal-title" id="modalGlossarioLabel">📘 Glossário de Termos Técnicos sobre Leptospirose</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="background-color: #F5F2EC; color: #3B3B3B;">
+          <p>Este glossário reúne termos importantes relacionados à leptospirose, sua vigilância e os aspectos discutidos nesta pesquisa. As definições são simplificadas para facilitar a compreensão.</p>
+          <hr>
+          <h5 class="mt-4" style="color: #1E5F74;">🦠 Agente Etiológico e Diagnóstico</h5>
+          <dl class="row">
+            <dt class="col-sm-4">Leptospira interrogans:</dt><dd class="col-sm-8">Principal espécie de bactéria patogênica causadora da leptospirose em humanos e animais.</dd>
+            <dt class="col-sm-4">Sorovares (ou Sorogrupos) Leptospíricos:</dt><dd class="col-sm-8">Variações dentro das espécies de Leptospira (ex: Icterohaemorrhagiae, Copenhageni), importantes para o diagnóstico e estudos epidemiológicos. Diferentes sorovares podem estar associados a diferentes reservatórios animais e manifestações clínicas.</dd>
+            <dt class="col-sm-4">Testes sorológicos (ELISA/MAT):</dt><dd class="col-sm-8">Exames laboratoriais para detecção de anticorpos. O MAT (Teste de Aglutinação Microscópica) é o padrão-ouro para diagnóstico e identificação do sorovar infectante.</dd>
+            <dt class="col-sm-4">PCR para leptospira:</dt><dd class="col-sm-8">Exame molecular (Reação em Cadeia da Polimerase) para detecção do DNA da bactéria, útil na fase inicial da doença (primeira semana), antes do aparecimento de anticorpos.</dd>
+            <dt class="col-sm-4">Coleta pareada de sangue:</dt><dd class="col-sm-8">Técnica diagnóstica recomendada para confirmação sorológica, com uma amostra coletada na fase aguda (primeiros dias de sintomas) e outra na fase convalescente (após 10-14 dias), para observar o aumento na concentração de anticorpos.</dd>
+          </dl>
+
+          <h5 class="mt-4" style="color: #1E5F74;">🏥 Quadro Clínico e Manejo</h5>
+          <dl class="row">
+            <dt class="col-sm-4">Leptospirose grave (Doença de Weil):</dt><dd class="col-sm-8">Forma clássica e severa da doença, caracterizada pela tríade de icterícia (pele e olhos amarelados), insuficiência renal aguda e hemorragias.</dd>
+            <dt class="col-sm-4">Insuficiência hepatorrenal:</dt><dd class="col-sm-8">Comprometimento simultâneo e grave das funções do fígado e dos rins, comum na Doença de Weil.</dd>
+            <dt class="col-sm-4">Hemorragia pulmonar (Síndrome de Hemorragia Pulmonar Aguda Grave - SHAPG):</dt><dd class="col-sm-8">Complicação grave e emergente da leptospirose, com alta letalidade, caracterizada por sangramento intenso nos pulmões e insuficiência respiratória.</dd>
+            <dt class="col-sm-4">Internação em UTI por leptospirose:</dt><dd class="col-sm-8">Indicador de gravidade do caso, refletindo a necessidade de cuidados intensivos e suporte avançado à vida.</dd>
+          </dl>
+          
+          <h5 class="mt-4" style="color: #1E5F74;">🌎 Distribuição, Vetores e Ambientes</h5>
+          <dl class="row">
+            <dt class="col-sm-4">Doença reemergente:</dt><dd class="col-sm-8">Doença infecciosa conhecida que, após ter sua incidência diminuída, volta a aumentar ou se expande para novas áreas geográficas ou populações.</dd>
+            <dt class="col-sm-4">Distribuição endêmica no Brasil:</dt><dd class="col-sm-8">Presença contínua da leptospirose em diversas regiões do país, com variações sazonais (aumento nos períodos chuvosos) e regionais.</dd>
+            <dt class="col-sm-4">Reservatórios urbanos (Rattus norvegicus):</dt><dd class="col-sm-8">Principalmente ratos de esgoto (ratazanas), que são os principais hospedeiros da Leptospira no meio urbano. Eles abrigam a bactéria nos rins e a eliminam pela urina, contaminando o ambiente sem apresentar sintomas da doença.</dd>
+            <dt class="col-sm-4">Valas e áreas alagáveis:</dt><dd class="col-sm-8">Locais que acumulam água e lama, frequentemente contaminadas pela urina de roedores, representando pontos críticos para a transmissão da leptospirose.</dd>
+            <dt class="col-sm-4">Exposição ocupacional à leptospirose:</dt><dd class="col-sm-8">Risco aumentado para certas profissões devido ao contato frequente com ambientes potencialmente contaminados, como trabalhadores de limpeza urbana, coletores de lixo, agricultores, pescadores, militares, veterinários e trabalhadores de construção civil.</dd>
+          </dl>
+
+          <h5 class="mt-4" style="color: #1E5F74;">🧭 Gestão Pública e Vigilância</h5>
+          <dl class="row">
+            <dt class="col-sm-4">Sistema de Informação de Agravos de Notificação (SINAN):</dt><dd class="col-sm-8">Principal sistema do Ministério da Saúde do Brasil para o registro e monitoramento de doenças e agravos de notificação compulsória, incluindo a leptospirose. Fonte primária de dados para a vigilância epidemiológica.</dd>
+            <dt class="col-sm-4">Classificação de risco para leptospirose:</dt><dd class="col-sm-8">Processo utilizado pela vigilância para identificar indivíduos ou áreas com maior probabilidade de ocorrência ou gravidade da doença, baseado em critérios epidemiológicos, ambientais, socioeconômicos e clínicos.</dd>
+            <dt class="col-sm-4">Boletim Epidemiológico (leptospirose):</dt><dd class="col-sm-8">Publicação periódica oficial do Ministério da Saúde, Secretarias Estaduais ou Municipais de Saúde com dados atualizados, análises e informações sobre a situação epidemiológica da leptospirose.</dd>
+            <dt class="col-sm-4">OMS/PAHO leptospirosis surveillance:</dt><dd class="col-sm-8">Iniciativas e diretrizes da Organização Mundial da Saúde (OMS) e da Organização Pan-Americana da Saúde (OPAS) para o monitoramento, prevenção e controle da leptospirose em nível global e nas Américas.</dd>
+            <dt class="col-sm-4">Indicadores de vigilância:</dt><dd class="col-sm-8">Medidas utilizadas para avaliar o desempenho e a qualidade do sistema de vigilância epidemiológica. Para leptospirose, incluem: <strong>Completude</strong> (percentual de campos preenchidos corretamente nas fichas de notificação), <strong>Oportunidade</strong> (rapidez da notificação e investigação dos casos), <strong>Letalidade</strong> (proporção de óbitos entre os casos), <strong>Sensibilidade</strong> (capacidade do sistema de detectar os casos existentes).</dd>
+          </dl>
+          <hr>
+          <p class="small"><strong>Fonte:</strong> Termos adaptados da pesquisa de doutorado "A Negligência Documentada: Como a Subnotificação da Leptospirose (Re) Produz Injustiça Sanitária" e literatura científica da área.</p>
+        </div>
+        <div class="modal-footer" style="background-color: #E0E0E0;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script>
+    // Script para Blog (mantido do seu modelo original)
+    // IMPORTANTE: Substitua 'SEU_LINK_DE_FEED_RSS_AQUI' pela URL real do seu feed RSS.
+    // Se você não tem um feed RSS, esta seção mostrará erro ou "Nenhuma notícia".
+    // Pode ser necessário um proxy como RSS2JSON (https://rss2json.com/) para converter para JSON e evitar CORS.
+    // Exemplo com RSS2JSON: `https://api.rss2json.com/v1/api.json?rss_url=SEU_LINK_DE_FEED_RSS_AQUI`
+    const rssFeedUrl = '[SEU_LINK_DE_FEED_RSS_AQUI]'; // SUBSTITUA PELA URL DO SEU FEED!
+
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date)) return 'Data inválida';
+            return date.toLocaleDateString('pt-BR', options);
+        } catch (e) {
+            return 'Data indisponível';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const blogContainer = document.getElementById('blog-posts-container');
+        if (!blogContainer) {
+            console.error("Contêiner de notícias do blog com ID 'blog-posts-container' não encontrado.");
+            return;
+        }
+        blogContainer.innerHTML = '<p class="text-center w-100">Carregando últimas publicações...</p>';
+
+        if (rssFeedUrl === '[SEU_LINK_DE_FEED_RSS_AQUI]') {
+            blogContainer.innerHTML = '<p class="text-center w-100"><em>A seção de Blog precisa da configuração de um Feed RSS. Edite o arquivo index.html para adicionar a URL do seu feed.</em></p>';
+            return;
+        }
+
+        try {
+            const response = await fetch(rssFeedUrl);
+            if (!response.ok) {
+                throw new Error(`Erro na requisição HTTP! Status: ${response.status} ao buscar ${rssFeedUrl}`);
+            }
+            const feedData = await response.json(); 
+            const posts = feedData.items || [];
+
+            if (posts.length === 0) {
+                blogContainer.innerHTML = '<p class="text-center w-100">Nenhuma notícia disponível no momento.</p>';
+                return;
+            }
+            blogContainer.innerHTML = ''; 
+            const postsToDisplay = posts.slice(0, 3);
+
+            postsToDisplay.forEach(post => {
+                const title = post.title || 'Sem Título';
+                const link = post.link || '#';
+                const pubDate = post.pubDate || post.isoDate;
+                const date = pubDate ? formatDate(pubDate) : 'Data Desconhecida';
+                const imageUrl = post.thumbnail || (post.enclosure && post.enclosure.link) || 'https://via.placeholder.com/400x200/3C6E52/FFFFFF?text=Blog+LeptoRJ'; // Verde Infecção
+
+                const cardHtml = `
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="${imageUrl}" class="card-img-top" alt="${title}" style="object-fit: cover; height: 200px;">
+                            <div class="card-body d-flex flex-column">
+                                <p class="card-text small text-muted mb-1">${date}</p>
+                                <h5 class="card-title mt-0" style="color: #1E5F74;">${title}</h5>
+                                <a href="${link}" class="btn btn-sm text-white mt-auto" style="background-color: #1E5F74;" target="_blank" rel="noopener noreferrer">Ler mais</a>
+                            </div>
                         </div>
-                    </li>
-                    <li><a href="formacao.html">Formação</a></li>
-                    <li class="dropdown">
-                        <a href="#">Publicações</a>
-                        <div class="dropdown-content">
-                            <a href="manuais.html">Manuais</a>
-                            <a href="informes-tecnicos.html">Informes Técnicos</a>
-                            <a href="fichas-de-notificacao.html">Fichas de Notificação</a>
+                    </div>
+                `;
+                blogContainer.innerHTML += cardHtml;
+            });
+        } catch (error) {
+            console.error("Erro ao carregar feed RSS:", error);
+            blogContainer.innerHTML = `<p class="text-center w-100 text-danger">Erro ao carregar notícias do blog. Verifique o console (F12).</p><p class="text-center w-100 small text-muted">Certifique-se de que a URL do feed ('${rssFeedUrl}') está correta e acessível, possivelmente via um proxy RSS-to-JSON.</p>`;
+        }
+    });
+  </script>
+
+  <script>
+    // Script para Clipping (mantido do seu modelo original, com dados de exemplo)
+    const clippingData = [
+        {
+            title: "Alerta de Leptospirose no RJ: Casos aumentam após período de chuvas intensas",
+            link: "#", // Substitua pelo link real da notícia
+            sourceDate: "Fonte: Mídia Local Exemplo - 20/MAI/2025",
+            imageUrl: "https://via.placeholder.com/400x200/705144/FFFFFF?text=Leptospirose+RJ" // Marrom Escorrimento
+        },
+        {
+            title: "Pesquisa da UFRJ revela subnotificação e impacto da desigualdade na leptospirose",
+            link: "#", // Substitua pelo link real
+            sourceDate: "Fonte: Jornal Universitário Exemplo - 18/MAI/2025",
+            imageUrl: "https://via.placeholder.com/400x200/705144/FFFFFF?text=Pesquisa+UFRJ"
+        },
+        {
+            title: "Saneamento básico ainda é desafio para controle de doenças como a leptospirose",
+            link: "#", // Substitua
+            sourceDate: "Fonte: Portal de Saúde Pública Exemplo - 15/MAI/2025",
+            imageUrl: "https://via.placeholder.com/400x200/705144/FFFFFF?text=Saneamento"
+        },
+        {
+            title: "Comunidades em áreas de risco são as mais afetadas pela leptospirose",
+            link: "#", // Substitua
+            sourceDate: "Fonte: Agência de Notícias Exemplo - 10/MAI/2025",
+            imageUrl: "https://via.placeholder.com/400x200/705144/FFFFFF?text=Comunidades+Risco"
+        }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const clippingContainer = document.getElementById('clipping-posts-container');
+        if (!clippingContainer) {
+            console.error("Contêiner de clipping com ID 'clipping-posts-container' não encontrado.");
+            return;
+        }
+        if (clippingData.length === 0) {
+            clippingContainer.innerHTML = '<p class="text-center w-100">Nenhum item de clipping disponível no momento.</p>';
+            return;
+        }
+        clippingContainer.innerHTML = ''; 
+        clippingData.forEach(item => {
+            const cardHtml = `
+                <div class="col">
+                    <div class="card h-100">
+                        ${item.imageUrl ? `<img src="${item.imageUrl}" class="card-img-top" alt="${item.title}" style="object-fit: cover; height: 150px;">` : ''}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" style="color: #1E5F74;">${item.title}</h5>
+                            <p class="card-text small text-muted">${item.sourceDate}</p>
+                            <a href="${item.link}" class="btn btn-sm text-white mt-auto" style="background-color: #3C6E52;" target="_blank" rel="noopener noreferrer">Ler Notícia</a>
                         </div>
-                    </li>
-                    <li><a href="https://substack.com/@gavesaude" target="_blank" rel="noopener">Blog</a></li>
-                    <li><a href="sobre-o-site.html">Sobre</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <section class="banner-destaque">
-        <div class="container">
-            <h1>GAVE: Vigilância Epidemiológica</h1>
-            <p>Conteúdo direto, apoio técnico e material educativo sobre doenças de notificação compulsória, vigilância em saúde e concursos públicos.</p>
-            <a href="#noticias-destaque" class="btn">Conheça o projeto</a>
-        </div>
-    </section>
-
-    <section id="recursos-disponiveis" class="recursos-disponiveis">
-        <div class="container">
-            <div class="section-title">
-                <h2>Recursos Disponíveis</h2>
-            </div>
-            <p class="text-center text-muted mb-5">Ferramentas e conteúdos essenciais para contribuir com seus conhecimentos na área.</p>
-            <div class="recursos-grid">
-                <div class="recurso-item">
-                    <div class="recurso-icon">📈</div>
-                    <h3>Epidemiologia na prática</h3>
-                    <p>Acesse informações e estatísticas sobre a situação epidemiológica atual.</p>
-                </div>
-                <div class="recurso-item">
-                    <div class="recurso-icon">⭐</div>
-                    <h3>Guia GAVE</h3>
-                    <p>Agravos de notificação compulsória. Acesse e baixe as fichas de notificação para diferentes doenças e agravos.</p>
-                </div>
-                <div class="recurso-item">
-                    <div class="recurso-icon">📋</div>
-                    <h3>Documentos Técnicos Importantes</h3>
-                    <p>Consulte manuais e guias técnicos para profissionais de saúde.</p>
-                </div>
-                <div class="recurso-item">
-                    <div class="recurso-icon">🎓</div>
-                    <h3>Aprenda com o GAVE</h3>
-                    <p>Materiais educativos e cursos para capacitação em vigilância epidemiológica.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="noticias-destaque" class="container my-5">
-        <div class="section-title">
-            <h2>Notícias em Destaque</h2>
-        </div>
-        <p class="text-center text-muted mb-5">As notícias, comentários, análises, percepções e publicações sobre saúde pública e epidemiologia.</p>
-        <div id="blog-posts-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            <p class="text-center w-100">Carregando últimas notícias...</p>
-        </div>
-    </section>
-
-    <section id="clipping-noticias" class="container my-5">
-        <div class="section-title">
-            <h2>Clipping de Notícias</h2>
-        </div>
-        <p class="text-center text-muted mb-5">O que está rolando por aí? Acompanhe notícias e destaques em saúde e vigilância.</p>
-        <div id="clipping-posts-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
-            <p class="text-center w-100">Carregando clipping...</p>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <h3>Sobre o GAVE</h3>
-                    <p>O Guia de Ações em Vigilância Epidemiológica (GAVE) é dedicado a fornecer informações e recursos sobre doenças de notificação compulsória e vigilância epidemiológica para profissionais de saúde e população em geral.</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><span class="icon">f</span></a>
-                        <a href="#" aria-label="Twitter"><span class="icon">t</span></a>
-                        <a href="#" aria-label="Instagram"><span class="icon">i</span></a>
-                        <a href="#" aria-label="YouTube"><span class="icon">y</span></a>
                     </div>
                 </div>
-                <div class="footer-col">
-                    <h3>Links Rápidos</h3>
-                    <ul class="footer-links">
-                        <li><a href="index.html">Início</a></li>
-                        <li><a href="doencas-de-notificacao-compulsoria.html">Doenças</a></li>
-                        <li><a href="formacao.html">Formação</a></li>
-                        <li><a href="manuais.html">Publicações</a></li>
-                        <li><a href="https://substack.com/@gavesaude" target="_blank" rel="noopener">Blog</a></li>
-                        <li><a href="sobre-o-site.html">Sobre</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Recursos</h3>
-                    <ul class="footer-links">
-                        <li><a href="fichas-de-notificacao.html">Fichas de Notificação</a></li>
-                        <li><a href="manuais.html">Manuais Técnicos</a></li>
-                        <li><a href="informes-tecnicos.html">Informes Epidemiológicos</a></li>
-                        <li><a href="glossario.html">Glossário</a></li>
-                        <li><a href="perguntas-frequentes.html">Perguntas Frequentes</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Contato</h3>
-                    <p>Entre em contato conosco para mais informações ou sugestões.</p>
-                    <ul class="footer-links">
-                        <li><span class="icon">✉</span> gavesaude@gmail.com</li>
-                        <li><span class="icon">☎</span> (21) 99889-8984</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 GAVE - Guia de Ações em Vigilância Epidemiológica. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-
-    <script>
-        // Menu mobile toggle
-        const navToggle = document.querySelector('.nav-toggle');
-        const nav = document.querySelector('nav');
-        const header = document.querySelector('header');
-
-        if (navToggle && nav && header) {
-            navToggle.addEventListener('click', () => {
-                nav.classList.toggle('active');
-                // Ajusta o 'top' do menu nav caso a altura do header mude
-                const headerHeight = header.offsetHeight;
-                nav.style.top = headerHeight + 'px';
-                nav.style.height = `calc(100vh - ${headerHeight}px)`;
-            });
-        }
-        
-        // Dropdown mobile
-        const dropdowns = document.querySelectorAll('.dropdown');
-        
-        function setupDropdowns() {
-            if (window.innerWidth < 992) {
-                dropdowns.forEach(dropdown => {
-                    const link = dropdown.querySelector('a'); 
-                    if (link) {
-                        link.addEventListener('click', function(event) {
-                            if (link.getAttribute('href') === '#' || !link.getAttribute('href') || link.parentElement.classList.contains('dropdown')) {
-                                event.preventDefault();
-                            }
-                            dropdowns.forEach(otherDropdown => {
-                                if (otherDropdown !== dropdown && otherDropdown.classList.contains('active')) {
-                                    otherDropdown.classList.remove('active');
-                                }
-                            });
-                            dropdown.classList.toggle('active');
-                        });
-                    }
-                });
-            } else {
-                dropdowns.forEach(dropdown => {
-                    dropdown.classList.remove('active'); 
-                });
-            }
-        }
-
-        setupDropdowns(); 
-        window.addEventListener('resize', setupDropdowns); 
-
-        // Fechar menu ao clicar fora
-        document.addEventListener('click', (e) => {
-            if (nav && nav.classList.contains('active')) { 
-                if (!e.target.closest('nav') && !e.target.closest('.nav-toggle')) {
-                    nav.classList.remove('active');
-                }
-            }
+            `;
+            clippingContainer.innerHTML += cardHtml;
         });
+    });
+  </script>
 
-        // Funções para carregar feeds RSS
-        function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            const date = new Date(dateString);
-            return date.toLocaleDateString('pt-BR', options);
-        }
-
-        function extractFirstImage(htmlString) {
-            const div = document.createElement('div');
-            div.innerHTML = htmlString;
-            const img = div.querySelector('img');
-            return img ? img.src : null;
-        }
-
-        function truncateText(text, maxLength) {
-            if (!text) return '';
-            let cleanText = text.replace(/<[^>]*>?/gm, '').replace(/\n/g, ' ').trim();
-            if (cleanText.length <= maxLength) return cleanText;
-            return cleanText.substring(0, maxLength) + '...';
-        }
-
-        // Carregar feed do blog
-        document.addEventListener('DOMContentLoaded', async () => {
-            const rssFeedUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://gavesaude.substack.com/feed';
-            const newsContainer = document.getElementById('blog-posts-container');
-
-            if (!newsContainer) {
-                console.error("Contêiner de notícias não encontrado");
-                return;
-            }
-
-            try {
-                const response = await fetch(rssFeedUrl);
-                if (!response.ok) {
-                    throw new Error(`Erro ao carregar feed: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                if (!data.items || data.items.length === 0) {
-                    newsContainer.innerHTML = '<p class="text-center w-100">Nenhuma notícia disponível no momento.</p>';
-                    return;
-                }
-                
-                newsContainer.innerHTML = '';
-                
-                // Exibir os 3 posts mais recentes
-                data.items.slice(0, 3).forEach(post => {
-                    const title = post.title;
-                    const link = post.link;
-                    const pubDate = formatDate(post.pubDate);
-                    
-                    // Extrair imagem ou usar placeholder
-                    let imageUrl = post.thumbnail || extractFirstImage(post.content) || 'https://via.placeholder.com/400x200?text=GAVE';
-                    
-                    // Extrair e limitar descrição
-                    const description = truncateText(post.description, 140);
-                    
-                    const cardHtml = `
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="${imageUrl}" class="card-img-top" alt="${title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x200?text=GAVE';">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">${title}</h5>
-                                    <p class="card-text small text-muted">${pubDate}</p>
-                                    <p class="card-text">${description}</p>
-                                    <a href="${link}" class="btn btn-primary mt-auto" target="_blank" rel="noopener">Ler mais</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    newsContainer.innerHTML += cardHtml;
-                });
-                
-            } catch (error) {
-                console.error("Erro ao carregar feed do blog:", error);
-                newsContainer.innerHTML = '<p class="text-center w-100 text-danger">Erro ao carregar notícias. Por favor, tente novamente mais tarde.</p>';
-            }
-        });
-
-        // Carregar clipping de notícias
-        document.addEventListener('DOMContentLoaded', async () => {
-            const clippingRSSUrls = [
-                'https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss/search?q=vigilancia+epidemiologica+saude+publica+lang:pt&hl=pt-BR&gl=BR&ceid=BR:pt',
-                'https://api.rss2json.com/v1/api.json?rss_url=https://g1.globo.com/rss/g1/saude/',
-                'https://api.rss2json.com/v1/api.json?rss_url=https://www.who.int/rss-feeds/news.xml',
-                'https://api.rss2json.com/v1/api.json?rss_url=https://www.paho.org/en/rss/news'
-            ];
-            
-            const clippingContainer = document.getElementById('clipping-posts-container');
-
-            if (!clippingContainer) {
-                console.error("Contêiner de clipping não encontrado");
-                return;
-            }
-
-            try {
-                let allClippingPosts = [];
-                
-                const fetchPromises = clippingRSSUrls.map(url => 
-                    fetch(url)
-                        .then(response => {
-                            if (!response.ok) {
-                                console.warn(`Erro ao carregar feed: ${url}`);
-                                return { items: [] };
-                            }
-                            return response.json();
-                        })
-                        .catch(error => {
-                            console.error(`Erro na requisição: ${url}`, error);
-                            return { items: [] };
-                        })
-                );
-
-                const results = await Promise.all(fetchPromises);
-                
-                results.forEach(feedData => {
-                    if (feedData.items) {
-                        allClippingPosts = allClippingPosts.concat(feedData.items);
-                    }
-                });
-
-                // Ordenar por data (mais recentes primeiro)
-                allClippingPosts.sort((a, b) => {
-                    const dateA = new Date(a.pubDate || a.published);
-                    const dateB = new Date(b.pubDate || b.published);
-                    return dateB - dateA;
-                });
-
-                clippingContainer.innerHTML = '';
-
-                if (allClippingPosts.length === 0) {
-                    clippingContainer.innerHTML = '<p class="text-center w-100">Nenhuma notícia disponível no momento.</p>';
-                    return;
-                }
-
-                // Exibir os 8 posts mais recentes
-                allClippingPosts.slice(0, 8).forEach(post => {
-                    const title = post.title || 'Sem Título';
-                    const link = post.link || '#';
-                    const date = post.pubDate ? formatDate(post.pubDate) : (post.published ? formatDate(post.published) : 'Data Desconhecida');
-                    const source = post.source && post.source.title ? post.source.title : 'Fonte Desconhecida';
-                    const sourceDate = `Fonte: ${source} - ${date}`;
-                    
-                    // Extrair imagem ou usar placeholder
-                    let imageUrl = 'https://via.placeholder.com/400x120?text=Noticia';
-                    
-                    if (post.enclosure && post.enclosure.link && post.enclosure.type && post.enclosure.type.startsWith('image')) {
-                        imageUrl = post.enclosure.link;
-                    } else if (post.thumbnail) {
-                        imageUrl = post.thumbnail;
-                    } else if (post.image) {
-                        imageUrl = post.image;
-                    } else {
-                        const extractedImg = extractFirstImage(post.description || post.content || '');
-                        if (extractedImg) {
-                            imageUrl = extractedImg;
-                        }
-                    }
-
-                    // Extrair e limitar descrição
-                    const truncatedDescription = truncateText(post.description || post.content || '', 120);
-
-                    const cardHtml = `
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="${imageUrl}" class="card-img-top" alt="${title}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x120?text=Noticia';">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">${title}</h5>
-                                    <p class="card-text small text-muted">${sourceDate}</p>
-                                    <p class="card-text">${truncatedDescription}</p>
-                                    <a href="${link}" class="btn btn-primary mt-auto" target="_blank" rel="noopener">Ler Notícia</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    clippingContainer.innerHTML += cardHtml;
-                });
-
-            } catch (error) {
-                console.error("Erro ao carregar clipping:", error);
-                clippingContainer.innerHTML = '<p class="text-center w-100 text-danger">Erro ao carregar clipping. Por favor, tente novamente mais tarde.</p>';
-            }
-        });
-    </script>
 </body>
 </html>
